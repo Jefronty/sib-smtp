@@ -21,9 +21,9 @@ email['m'] = 'This email is only a test'
 eamil['t'] = 'me@example.net'
 
 # sender
-email['f'] = 'My custome mailer <info@example.net>'
+email['f'] = 'My custom mailer <info@example.net>'
 
 mailer.sendMessage( email )
 ```
 ## or from terminal
-`python mailer.py '{"s": "Test email", "m": "This email is only a test", "t": "me@example.net", "f": "My custome mailer <info@example.net>"}'`
+`python mailer.py '{"s": "Test email", "m": "This email is only a test", "t": "me@example.net", "f": "My custom mailer <info@example.net>"}'`
