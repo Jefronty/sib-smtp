@@ -3,20 +3,29 @@ import smtplib, json, os, sys
 #credentials
 import sib
 
+# optional default values
 default = {
-	'sender': 'My SMTP mailer <noreply@mydomain.net>',
+	'sender': '', # ex: suto-mailer <noreply@mydomain.net>
 	'recipient': '' # email address to receive message when no recipient is specified
 }
 
+# param is a dict with required keys: 's' (subject) and 'm' (message)
+# optional keys: 'f' (from), 't' (To), 'h' (headers)
+# h can be a formatted header string, list or tuple of header strings, or dict of k:v header pairs
 def sendMessage(param):
-	try:
+	if 's' in param:
 		subject = param['s']
-	except:
+	else:
 		return {'status': False, 'description': 'missing subject [s]'}
-	try:
+	if 'm' in param:
 		message = param['m']
-	except:
+	else:
 		return {'status': False, 'description': 'missing body [m]'}
+	if 'h' in param:
+		headers = param['h']
+		_type = type( headers )
+	else:
+		headers = False
 
 	# create and send email
 	mailserver = smtplib.SMTP('smtp-relay.sendinblue.com', 587)
@@ -34,6 +43,16 @@ def sendMessage(param):
 
 	email = 'From: %s\nTo: %s' % (sender, recipient)
 	email += '\nSubject: '+ param['s']
+	if headers:
+		# add custom headers
+		if _type in (tuple, list):
+			for h in headers:
+				email += '\n%s' % h
+		elif _type is dict:
+			for k in headers:
+				email += '\n%s: %s' % (k, headers[k])
+		if _type is str:
+			email += '\n%s' % headers
 	email += "\n\n" + param['m']
 	mailserver.sendmail(sender, recipient, email)
 	return {'status': True, 'description': 'sent message'}
