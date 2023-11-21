@@ -23,6 +23,9 @@ eamil['t'] = 'me@example.net'
 # sender
 email['f'] = 'My custom mailer <info@example.net>'
 
+# custom headers
+email['h'] = {'Content-Type': 'text/plain', 'Content-Transfer-Encoding': 'qouted-printable'}
+
 mailer.sendMessage( email )
 ```
 ## or from terminal
